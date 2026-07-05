@@ -1,27 +1,13 @@
 """
 Professional GUI for Coronary Heart Disease Prediction
-Features modern styling, model comparison, and probability outputs
+Loads pre-trained models from model/ directory.
+Features modern styling, model comparison, and probability outputs.
 """
 
 import warnings
 warnings.filterwarnings("ignore")
 
 import pandas as pd
-import numpy as np
-import os
-
-# ML imports
-from sklearn.impute import SimpleImputer
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
-
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.linear_model import LogisticRegression
-from sklearn.naive_bayes import GaussianNB
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.svm import SVC
-from sklearn.ensemble import RandomForestClassifier
 
 # GUI imports
 import tkinter as tk
@@ -29,126 +15,28 @@ from tkinter import ttk, messagebox
 
 # plotting
 import matplotlib.pyplot as plt
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
-# ---------- Data Loading & Preprocessing ----------
-def load_and_preprocess_data():
-    """Load and preprocess the Framingham dataset"""
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    data_paths = [
-        os.path.join(script_dir, "framingham.csv"),
-        "framingham.csv",
-    ]
-    
-    df = None
-    for path in data_paths:
-        if os.path.exists(path):
-            df = pd.read_csv(path)
-            break
-    
-    if df is None:
-        raise FileNotFoundError("Could not find framingham.csv")
-    
-    # Drop education column
-    df1 = df.drop(columns=["education"])
-    
-    # Drop features
-    features_to_drop = ['currentSmoker', 'diaBP']
-    df2 = df1.drop(columns=features_to_drop)
-    
-    # Impute missing values
-    imputer = SimpleImputer(strategy='most_frequent')
-    df3 = pd.DataFrame(imputer.fit_transform(df2), columns=df2.columns, index=df2.index)
-    
-    # Remove outliers
-    df3 = df3[~(df3['sysBP'] > 220)]
-    df3 = df3[~(df3['BMI'] > 43)]
-    df3 = df3[~(df3['heartRate'] > 125)]
-    df3 = df3[~(df3['glucose'] > 200)]
-    df3 = df3[~(df3['totChol'] > 450)]
-    
-    return df3
-
-def train_models(df3):
-    """Train all ML models and return them"""
-    # Standardize features
-    scaler = StandardScaler()
-    cols_to_standardise = ['age', 'cigsPerDay', 'totChol', 'sysBP', 'BMI', 'heartRate', 'glucose']
-    df3[cols_to_standardise] = scaler.fit_transform(df3[cols_to_standardise])
-    
-    # Split features and target
-    X = df3.drop(columns=["TenYearCHD"])
-    y = df3["TenYearCHD"]
-    
-    # Train/test split
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=40)
-    
-    models = {}
-    accuracies = {}
-    
-    # KNN
-    knn = KNeighborsClassifier(n_neighbors=7)
-    knn.fit(X_train, y_train)
-    models['KNN'] = knn
-    accuracies['KNN'] = round(accuracy_score(y_test, knn.predict(X_test)) * 100, 2)
-    
-    # Logistic Regression
-    lg = LogisticRegression(max_iter=1000)
-    lg.fit(X_train, y_train)
-    models['Logistic Regression'] = lg
-    accuracies['Logistic Regression'] = round(accuracy_score(y_test, lg.predict(X_test)) * 100, 2)
-    
-    # Naive Bayes
-    nb = GaussianNB()
-    nb.fit(X_train, y_train)
-    models['Naive Bayes'] = nb
-    accuracies['Naive Bayes'] = round(accuracy_score(y_test, nb.predict(X_test)) * 100, 2)
-    
-    # Decision Tree
-    dt = DecisionTreeClassifier(min_samples_split=50, random_state=0)
-    dt.fit(X_train, y_train)
-    models['Decision Tree'] = dt
-    accuracies['Decision Tree'] = round(accuracy_score(y_test, dt.predict(X_test)) * 100, 2)
-    
-    # SVM
-    svc = SVC(C=1, kernel='rbf', probability=True)
-    svc.fit(X_train, y_train)
-    models['SVM'] = svc
-    accuracies['SVM'] = round(accuracy_score(y_test, svc.predict(X_test)) * 100, 2)
-    
-    # Random Forest
-    rf = RandomForestClassifier(n_estimators=100, random_state=0)
-    rf.fit(X_train, y_train)
-    models['Random Forest'] = rf
-    accuracies['Random Forest'] = round(accuracy_score(y_test, rf.predict(X_test)) * 100, 2)
-    
-    return models, accuracies, scaler, list(X.columns)
-
-# ---------- Build Sample ----------
-def build_sample_from_inputs(inputs, scaler, feature_order):
-    """Convert input dict to scaled numpy array"""
-    cols_to_standardise = ['age', 'cigsPerDay', 'totChol', 'sysBP', 'BMI', 'heartRate', 'glucose']
-    
-    row = {}
-    for col in feature_order:
-        row[col] = float(inputs.get(col, 0))
-    
-    raw_df = pd.DataFrame([row])
-    raw_df[cols_to_standardise] = scaler.transform(raw_df[cols_to_standardise])
-    
-    return raw_df[feature_order].values
+from utils import (
+    load_model, load_scaler, load_all_models,
+    FEATURE_ORDER, prepare_sample, evaluate_accuracies
+)
 
 # ---------- Main Application ----------
 class CHDApp(tk.Tk):
     def __init__(self):
         super().__init__()
         
-        # Load and train models
-        print("Loading data and training models...")
-        df3 = load_and_preprocess_data()
-        self.models, self.accuracies, self.scaler, self.feature_order = train_models(df3)
+        # Load pre-trained models (fast startup)
+        print("Loading pre-trained models...")
+        self.best_model = load_model()
+        self.scaler = load_scaler()
+        self.all_models = load_all_models()
+        self.feature_order = FEATURE_ORDER
+        
+        # Evaluate accuracies on test data
+        self.accuracies = evaluate_accuracies(self.all_models)
         self.best_model_name = max(self.accuracies.items(), key=lambda x: x[1])[0]
-        print(f"Models trained! Best model: {self.best_model_name}")
+        print(f"Models loaded! Best model: {self.best_model_name}")
         
         # Configure window
         self.title("Coronary Heart Disease Predictor")
@@ -240,7 +128,7 @@ class CHDApp(tk.Tk):
         ttk.Label(right, text="Choose model for prediction:").pack(anchor="w", pady=(8, 2))
         self.model_choice = tk.StringVar(value=self.best_model_name)
         model_cb = ttk.Combobox(right, textvariable=self.model_choice,
-                               values=list(self.models.keys()), state="readonly")
+                               values=list(self.all_models.keys()), state="readonly")
         model_cb.pack(anchor="w", pady=(0, 8))
         
         # Result display
@@ -279,7 +167,6 @@ class CHDApp(tk.Tk):
     
     def _predict_with_model_name(self, model_name):
         try:
-            # Gather inputs
             inputs = {}
             for col in self.feature_order:
                 if col in self.inputs:
@@ -287,9 +174,8 @@ class CHDApp(tk.Tk):
                 else:
                     inputs[col] = "0"
             
-            # Build sample and predict
-            sample = build_sample_from_inputs(inputs, self.scaler, self.feature_order)
-            model = self.models[model_name]
+            sample = prepare_sample(inputs, self.scaler)
+            model = self.all_models[model_name]
             pred = model.predict(sample)[0]
             
             # Get probability if available

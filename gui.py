@@ -1,132 +1,27 @@
 """
 Basic GUI for Coronary Heart Disease Prediction
-Uses multiple ML models for comparison and prediction
+Loads pre-trained models from model/ directory.
 """
 
 import warnings
 warnings.filterwarnings("ignore")
 
-import pandas as pd
-import numpy as np
-import os
 from tkinter import *
 import tkinter.messagebox as M
-from sklearn.impute import SimpleImputer
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
 
-# ML models
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.linear_model import LogisticRegression
-from sklearn.naive_bayes import GaussianNB
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.svm import SVC
-from sklearn.ensemble import RandomForestClassifier
+from utils import (
+    load_model, load_scaler, load_all_models,
+    FEATURE_ORDER, prepare_sample, evaluate_accuracies
+)
 
-# ---------- Data Loading & Preprocessing ----------
-def load_and_preprocess_data():
-    """Load and preprocess the Framingham dataset"""
-    # Try to find the dataset
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    data_paths = [
-        os.path.join(script_dir, "framingham.csv"),
-        "framingham.csv",
-        r"H:\mldataset\framingham.csv"
-    ]
-    
-    df = None
-    for path in data_paths:
-        if os.path.exists(path):
-            df = pd.read_csv(path)
-            break
-    
-    if df is None:
-        raise FileNotFoundError("Could not find framingham.csv")
-    
-    # Drop education column
-    df1 = df.drop(columns=["education"])
-    
-    # Drop features
-    features_to_drop = ['currentSmoker', 'diaBP']
-    df2 = df1.drop(columns=features_to_drop)
-    
-    # Impute missing values
-    imputer = SimpleImputer(strategy='most_frequent')
-    df3 = pd.DataFrame(imputer.fit_transform(df2), columns=df2.columns, index=df2.index)
-    
-    # Remove outliers
-    df3 = df3[~(df3['sysBP'] > 220)]
-    df3 = df3[~(df3['BMI'] > 43)]
-    df3 = df3[~(df3['heartRate'] > 125)]
-    df3 = df3[~(df3['glucose'] > 200)]
-    df3 = df3[~(df3['totChol'] > 450)]
-    
-    return df3
-
-def train_models(df3):
-    """Train all ML models and return them"""
-    # Standardize features
-    scaler = StandardScaler()
-    cols_to_standardise = ['age', 'cigsPerDay', 'totChol', 'sysBP', 'BMI', 'heartRate', 'glucose']
-    df3[cols_to_standardise] = scaler.fit_transform(df3[cols_to_standardise])
-    
-    # Split features and target
-    X = df3.drop(columns=["TenYearCHD"])
-    Y = df3["TenYearCHD"]
-    
-    # Train/test split
-    X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=40)
-    
-    models = {}
-    accuracies = {}
-    
-    # KNN
-    knn = KNeighborsClassifier(n_neighbors=7)
-    knn.fit(X_train, Y_train)
-    models['KNN'] = knn
-    accuracies['KNN'] = round(accuracy_score(Y_test, knn.predict(X_test)) * 100, 2)
-    
-    # Logistic Regression
-    lg = LogisticRegression(max_iter=1000)
-    lg.fit(X_train, Y_train)
-    models['Logistic Regression'] = lg
-    accuracies['Logistic Regression'] = round(accuracy_score(Y_test, lg.predict(X_test)) * 100, 2)
-    
-    # Naive Bayes
-    nb = GaussianNB()
-    nb.fit(X_train, Y_train)
-    models['Naive Bayes'] = nb
-    accuracies['Naive Bayes'] = round(accuracy_score(Y_test, nb.predict(X_test)) * 100, 2)
-    
-    # Decision Tree
-    dt = DecisionTreeClassifier(min_samples_split=50, random_state=0)
-    dt.fit(X_train, Y_train)
-    models['Decision Tree'] = dt
-    accuracies['Decision Tree'] = round(accuracy_score(Y_test, dt.predict(X_test)) * 100, 2)
-    
-    # SVM
-    svc = SVC(C=1, kernel='rbf')
-    svc.fit(X_train, Y_train)
-    models['SVM'] = svc
-    accuracies['SVM'] = round(accuracy_score(Y_test, svc.predict(X_test)) * 100, 2)
-    
-    # Random Forest
-    rf = RandomForestClassifier(n_estimators=100, random_state=0)
-    rf.fit(X_train, Y_train)
-    models['Random Forest'] = rf
-    accuracies['Random Forest'] = round(accuracy_score(Y_test, rf.predict(X_test)) * 100, 2)
-    
-    return models, accuracies, scaler, list(X.columns)
-
-# Load data and train models
-print("Loading data and training models...")
-df3 = load_and_preprocess_data()
-models, accuracies, scaler, feature_order = train_models(df3)
-print("Models trained successfully!")
-
-# Get best model
+# Load pre-trained models (fast startup)
+print("Loading pre-trained models...")
+best_model = load_model()
+scaler = load_scaler()
+all_models = load_all_models()
+accuracies = evaluate_accuracies(all_models)
 best_model_name = max(accuracies.items(), key=lambda x: x[1])[0]
+print("Models loaded successfully!")
 
 # ---------- GUI ----------
 class CHDApp:
@@ -266,7 +161,6 @@ class CHDApp:
     
     def predict(self):
         try:
-            # Get input values
             inputs = {
                 'male': float(self.v1.get()),
                 'age': float(self.v2.get()),
@@ -282,16 +176,8 @@ class CHDApp:
                 'glucose': float(self.v12.get())
             }
             
-            # Create feature array in correct order
-            feature_values = [inputs[f] for f in feature_order]
-            
-            # Scale the features that need scaling
-            sample = pd.DataFrame([feature_values], columns=feature_order)
-            cols_to_scale = ['age', 'cigsPerDay', 'totChol', 'sysBP', 'BMI', 'heartRate', 'glucose']
-            sample[cols_to_scale] = scaler.transform(sample[cols_to_scale])
-            
-            # Predict using best model
-            result = models[best_model_name].predict(sample.values)[0]
+            sample = prepare_sample(inputs, scaler)
+            result = best_model.predict(sample)[0]
             
             if result == 1:
                 M.showinfo(title="Heart Disease Prediction",
