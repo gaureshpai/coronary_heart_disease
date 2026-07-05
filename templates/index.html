@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}Home - CHD Prediction{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <h1>Coronary Heart Disease Prediction</h1>
+    <p>Use our advanced machine learning model to assess your risk of coronary heart disease</p>
+</div>
+
+<div class="prediction-form">
+    <h2>Predict Your Risk</h2>
+    <form method="POST" action="/predict" id="predictionForm">
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="age">Age</label>
+                <input type="number" id="age" name="age" min="20" max="100" value="45" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="gender">Gender</label>
+                <select id="gender" name="gender" required>
+                    <option value="1">Male</option>
+                    <option value="0">Female</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="currentSmoker">Current Smoker</label>
+                <select id="currentSmoker" name="currentSmoker" required>
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="cigsPerDay">Cigarettes Per Day</label>
+                <input type="number" id="cigsPerDay" name="cigsPerDay" min="0" max="100" value="0">
+            </div>
+            
+            <div class="form-group">
+                <label for="BPMeds">On Blood Pressure Medication</label>
+                <select id="BPMeds" name="BPMeds" required>
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="prevalentStroke">History of Stroke</label>
+                <select id="prevalentStroke" name="prevalentStroke" required>
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="prevalentHyp">Hypertension</label>
+                <select id="prevalentHyp" name="prevalentHyp" required>
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="diabetes">Diabetes</label>
+                <select id="diabetes" name="diabetes" required>
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="totChol">Total Cholesterol (mg/dL)</label>
+                <input type="number" id="totChol" name="totChol" min="100" max="400" value="200" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="sysBP">Systolic Blood Pressure (mmHg)</label>
+                <input type="number" id="sysBP" name="sysBP" min="80" max="250" value="120" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="diaBP">Diastolic Blood Pressure (mmHg)</label>
+                <input type="number" id="diaBP" name="diaBP" min="40" max="150" value="80" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="BMI">BMI</label>
+                <input type="number" id="BMI" name="BMI" min="15" max="60" step="0.1" value="25" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="heartRate">Heart Rate (bpm)</label>
+                <input type="number" id="heartRate" name="heartRate" min="40" max="200" value="75" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="glucose">Glucose (mg/dL)</label>
+                <input type="number" id="glucose" name="glucose" min="40" max="300" value="80" required>
+            </div>
+        </div>
+        
+        <button type="submit" class="btn-predict">Predict Risk</button>
+    </form>
+</div>
+{% endblock %}
