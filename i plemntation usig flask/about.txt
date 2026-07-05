@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <h2 class="mb-4">About This Project</h2>
+        
+        <div class="card mb-4">
+            <div class="card-body">
+                <h4 class="card-title">Coronary Heart Disease Prediction</h4>
+                <p class="card-text">
+                    This application predicts the 10-year risk of coronary heart disease (CHD) 
+                    based on the Framingham Heart Study dataset. The prediction model uses 
+                    logistic regression, which demonstrated the best performance among several 
+                    tested machine learning algorithms.
+                </p>
+            </div>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-body">
+                <h4 class="card-title">Dataset Information</h4>
+                <p class="card-text">
+                    The Framingham Heart Study is a long-term, ongoing cardiovascular study 
+                    that began in 1948 with 5,209 adult subjects. This application uses 
+                    a subset of the study data with the following features:
+                </p>
+                <ul>
+                    <li>Demographics (age, gender)</li>
+                    <li>Behavioral factors (smoking)</li>
+                    <li>Medical history (hypertension, diabetes, stroke)</li>
+                    <li>Current medical measurements (blood pressure, cholesterol, BMI)</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Disclaimer</h4>
+                <p class="card-text">
+                    This application is for educational and informational purposes only. 
+                    It is not a substitute for professional medical advice, diagnosis, 
+                    or treatment. Always seek the advice of your physician or other 
+                    qualified health provider with any questions you may have regarding 
+                    a medical condition.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
