@@ -1,66 +1,85 @@
-{% extends "base.html" %}
-
-{% block title %}About - CHD Prediction{% endblock %}
-
+{% extends "base.html" %} {% block title %}About - CHD Prediction{% endblock %}
 {% block content %}
 <div class="about-page">
-    <h1>About This Project</h1>
-    
-    <section class="about-section">
-        <h2>Coronary Heart Disease Prediction System</h2>
-        <p>This application uses machine learning to predict the 10-year risk of coronary heart disease (CHD) based on patient health data from the Framingham Heart Study.</p>
-    </section>
-    
-    <section class="about-section">
-        <h2>How It Works</h2>
-        <p>The prediction model analyzes multiple risk factors including:</p>
-        <ul>
-            <li><strong>Demographics:</strong> Age, gender</li>
-            <li><strong>Smoking status:</strong> Current smoking, cigarettes per day</li>
-            <li><strong>Medical history:</strong> Blood pressure medication, stroke history, hypertension, diabetes</li>
-            <li><strong>Vital signs:</strong> Blood pressure (systolic/diastolic), heart rate</li>
-            <li><strong>Lab values:</strong> Total cholesterol, glucose levels</li>
-            <li><strong>Body measurements:</strong> BMI (Body Mass Index)</li>
-        </ul>
-    </section>
-    
-    <section class="about-section">
-        <h2>The Model</h2>
-        <p>Our prediction model is trained using the Framingham Heart Study dataset, which is one of the most extensively studied cardiovascular disease studies in the world. The model uses logistic regression to estimate the probability of developing CHD within 10 years.</p>
-    </section>
-    
-    <section class="about-section">
-        <h2>Important Notes</h2>
-        <div class="notes-grid">
-            <div class="note-card">
-                <h3>For Educational Use</h3>
-                <p>This tool is designed for educational and informational purposes only.</p>
-            </div>
-            <div class="note-card">
-                <h3>Not a Diagnosis</h3>
-                <p>This is not a diagnostic tool. Always consult healthcare professionals.</p>
-            </div>
-            <div class="note-card">
-                <h3>Regular Check-ups</h3>
-                <p>Regular medical check-ups are essential for heart health.</p>
-            </div>
-        </div>
-    </section>
-    
-    <section class="about-section">
-        <h2>Technology Stack</h2>
-        <ul>
-            <li>Python & Flask for backend</li>
-            <li>Scikit-learn for machine learning</li>
-            <li>Pandas for data manipulation</li>
-            <li>HTML/CSS/JavaScript for frontend</li>
-        </ul>
-    </section>
-    
-    <section class="about-section">
-        <h2>Project Structure</h2>
-        <div class="code-block">
-            <pre>
+  <h1>About This Project</h1>
+
+  <section class="about-section">
+    <h2>Coronary Heart Disease Prediction System</h2>
+    <p>
+      This application uses machine learning to predict the 10-year risk of
+      coronary heart disease (CHD) based on patient health data from the
+      Framingham Heart Study.
+    </p>
+  </section>
+
+  <section class="about-section">
+    <h2>How It Works</h2>
+    <p>The prediction model analyzes multiple risk factors including:</p>
+    <ul>
+      <li><strong>Demographics:</strong> Age, gender</li>
+      <li>
+        <strong>Smoking status:</strong> Current smoking, cigarettes per day
+      </li>
+      <li>
+        <strong>Medical history:</strong> Blood pressure medication, stroke
+        history, hypertension, diabetes
+      </li>
+      <li>
+        <strong>Vital signs:</strong> Blood pressure (systolic/diastolic), heart
+        rate
+      </li>
+      <li><strong>Lab values:</strong> Total cholesterol, glucose levels</li>
+      <li><strong>Body measurements:</strong> BMI (Body Mass Index)</li>
+    </ul>
+  </section>
+
+  <section class="about-section">
+    <h2>The Model</h2>
+    <p>
+      Our prediction model is trained using the Framingham Heart Study dataset,
+      which is one of the most extensively studied cardiovascular disease
+      studies in the world. The model uses logistic regression to estimate the
+      probability of developing CHD within 10 years.
+    </p>
+  </section>
+
+  <section class="about-section">
+    <h2>Important Notes</h2>
+    <div class="notes-grid">
+      <div class="note-card">
+        <h3>For Educational Use</h3>
+        <p>
+          This tool is designed for educational and informational purposes only.
+        </p>
+      </div>
+      <div class="note-card">
+        <h3>Not a Diagnosis</h3>
+        <p>
+          This is not a diagnostic tool. Always consult healthcare
+          professionals.
+        </p>
+      </div>
+      <div class="note-card">
+        <h3>Regular Check-ups</h3>
+        <p>Regular medical check-ups are essential for heart health.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-section">
+    <h2>Technology Stack</h2>
+    <ul>
+      <li>Python & Flask for backend</li>
+      <li>Scikit-learn for machine learning</li>
+      <li>Pandas for data manipulation</li>
+      <li>HTML/CSS/JavaScript for frontend</li>
+    </ul>
+  </section>
+
+  <section class="about-section">
+    <h2>Project Structure</h2>
+    <div class="code-block">
+      <pre>
 coronary_heart_disease/
 ├── app.py                  # Flask application
 ├── train_model.py          # Model training script
@@ -80,7 +99,7 @@ coronary_heart_disease/
 ├── professional_gui.py    # Professional tkinter GUI
 └── docs/                  # Documentation
             </pre>
-        </div>
-    </section>
+    </div>
+  </section>
 </div>
 {% endblock %}

@@ -1,54 +1,69 @@
-{% extends "base.html" %}
-
-{% block title %}Prediction Result{% endblock %}
-
-{% block content %}
+{% extends "base.html" %} {% block title %}Prediction Result{% endblock %} {%
+block content %}
 <div class="result-container">
-    <h1>Prediction Result</h1>
-    
-    {% if result %}
-    <div class="result-card {% if result.prediction == 1 %}high-risk{% else %}low-risk{% endif %}">
-        <div class="risk-indicator">
-            {% if result.prediction == 1 %}
-                <span class="risk-badge high">High Risk</span>
-            {% else %}
-                <span class="risk-badge low">Low Risk</span>
-            {% endif %}
-        </div>
-        
-        <div class="risk-score">
-            <h2>10-Year CHD Risk</h2>
-            <p class="percentage">{{ "%.1f"|format(result.probability * 100) }}%</p>
-        </div>
-        
-        <div class="risk-description">
-            {% if result.prediction == 1 %}
-                <p>Your risk assessment indicates a <strong>higher probability</strong> of developing coronary heart disease within the next 10 years.</p>
-                <p>We recommend consulting with a healthcare professional to discuss preventive measures and lifestyle changes.</p>
-            {% else %}
-                <p>Your risk assessment indicates a <strong>lower probability</strong> of developing coronary heart disease within the next 10 years.</p>
-                <p>Continue maintaining a healthy lifestyle with regular exercise and a balanced diet.</p>
-            {% endif %}
-        </div>
+  <h1>Prediction Result</h1>
+
+  {% if result %}
+  <div
+    class="result-card {% if result.prediction == 1 %}high-risk{% else %}low-risk{% endif %}"
+  >
+    <div class="risk-indicator">
+      {% if result.prediction == 1 %}
+      <span class="risk-badge high">High Risk</span>
+      {% else %}
+      <span class="risk-badge low">Low Risk</span>
+      {% endif %}
     </div>
-    
-    <div class="recommendations">
-        <h3>Recommendations</h3>
-        <ul>
-            <li>Regular check-ups with your healthcare provider</li>
-            <li>Maintain a healthy weight and exercise regularly</li>
-            <li>Eat a heart-healthy diet low in saturated fats</li>
-            <li>If you smoke, consider quitting</li>
-            <li>Monitor blood pressure and cholesterol levels</li>
-            <li>Manage stress through relaxation techniques</li>
-        </ul>
+
+    <div class="risk-score">
+      <h2>10-Year CHD Risk</h2>
+      <p class="percentage">{{ "%.1f"|format(result.probability * 100) }}%</p>
     </div>
-    
-    <div class="disclaimer">
-        <p><strong>Disclaimer:</strong> This prediction is for educational purposes only and should not replace professional medical advice. Always consult with a qualified healthcare provider for medical decisions.</p>
+
+    <div class="risk-description">
+      {% if result.prediction == 1 %}
+      <p>
+        Your risk assessment indicates a <strong>higher probability</strong> of
+        developing coronary heart disease within the next 10 years.
+      </p>
+      <p>
+        We recommend consulting with a healthcare professional to discuss
+        preventive measures and lifestyle changes.
+      </p>
+      {% else %}
+      <p>
+        Your risk assessment indicates a <strong>lower probability</strong> of
+        developing coronary heart disease within the next 10 years.
+      </p>
+      <p>
+        Continue maintaining a healthy lifestyle with regular exercise and a
+        balanced diet.
+      </p>
+      {% endif %}
     </div>
-    {% endif %}
-    
-    <a href="/" class="btn-back">Make Another Prediction</a>
+  </div>
+
+  <div class="recommendations">
+    <h3>Recommendations</h3>
+    <ul>
+      <li>Regular check-ups with your healthcare provider</li>
+      <li>Maintain a healthy weight and exercise regularly</li>
+      <li>Eat a heart-healthy diet low in saturated fats</li>
+      <li>If you smoke, consider quitting</li>
+      <li>Monitor blood pressure and cholesterol levels</li>
+      <li>Manage stress through relaxation techniques</li>
+    </ul>
+  </div>
+
+  <div class="disclaimer">
+    <p>
+      <strong>Disclaimer:</strong> This prediction is for educational purposes
+      only and should not replace professional medical advice. Always consult
+      with a qualified healthcare provider for medical decisions.
+    </p>
+  </div>
+  {% endif %}
+
+  <a href="/" class="btn-back">Make Another Prediction</a>
 </div>
 {% endblock %}

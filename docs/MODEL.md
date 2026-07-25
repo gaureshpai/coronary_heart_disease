@@ -24,6 +24,7 @@ P(Y=1) = 1 / (1 + e^(-(β₀ + β₁x₁ + β₂x₂ + ... + βₙxₙ)))
 ```
 
 Where:
+
 - P(Y=1) is the probability of having CHD
 - β₀ is the intercept
 - β₁...βₙ are the feature coefficients
@@ -47,16 +48,16 @@ Where:
 
 ### Feature Statistics
 
-| Feature | Mean | Std Dev | Min | Max |
-|---------|------|---------|-----|-----|
-| age | 49.58 | 8.57 | 32 | 70 |
-| totChol | 236.70 | 44.55 | 107 | 696 |
-| sysBP | 132.35 | 22.04 | 83.5 | 295 |
-| diaBP | 82.90 | 11.95 | 48 | 142.5 |
-| BMI | 25.80 | 4.08 | 15.54 | 56.8 |
-| heartRate | 75.89 | 12.03 | 40 | 143 |
-| glucose | 81.94 | 23.55 | 40 | 394 |
-| cigsPerDay | 9.04 | 11.97 | 0 | 70 |
+| Feature    | Mean   | Std Dev | Min   | Max   |
+| ---------- | ------ | ------- | ----- | ----- |
+| age        | 49.58  | 8.57    | 32    | 70    |
+| totChol    | 236.70 | 44.55   | 107   | 696   |
+| sysBP      | 132.35 | 22.04   | 83.5  | 295   |
+| diaBP      | 82.90  | 11.95   | 48    | 142.5 |
+| BMI        | 25.80  | 4.08    | 15.54 | 56.8  |
+| heartRate  | 75.89  | 12.03   | 40    | 143   |
+| glucose    | 81.94  | 23.55   | 40    | 394   |
+| cigsPerDay | 9.04   | 11.97   | 0     | 70    |
 
 ## Model Performance
 
@@ -94,6 +95,7 @@ Actual CHD       523       381
 ### Cross-Validation Results
 
 5-fold stratified cross-validation:
+
 - Mean Accuracy: 84.8% ± 1.2%
 - Mean AUC: 0.843 ± 0.015
 

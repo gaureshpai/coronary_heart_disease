@@ -24,28 +24,33 @@ A machine learning-based web application for predicting 10-year risk of coronary
 ### Steps
 
 1. Clone the repository:
+
 ```bash
 git clone <repository-url>
 cd coronary_heart_disease
 ```
 
 2. Create a virtual environment:
+
 ```bash
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
 
 3. Install dependencies:
+
 ```bash
 pip install -r requirements.txt
 ```
 
 4. Train the model (if not already trained):
+
 ```bash
 python train_model.py
 ```
 
 5. Run the application:
+
 ```bash
 python app.py
 ```
@@ -74,11 +79,13 @@ python app.py
 The project also includes two tkinter-based GUI applications:
 
 1. **Basic GUI** (`gui.py`):
+
 ```bash
 python gui.py
 ```
 
 2. **Professional GUI** (`professional_gui.py`):
+
 ```bash
 python professional_gui.py
 ```
@@ -126,22 +133,22 @@ The prediction model uses **Logistic Regression**, a statistical method for bina
 
 The model uses the following features:
 
-| Feature | Description | Type |
-|---------|-------------|------|
-| age | Age in years | Continuous |
-| gender | 1 = Male, 0 = Female | Binary |
-| currentSmoker | 1 = Current smoker, 0 = Non-smoker | Binary |
-| cigsPerDay | Number of cigarettes smoked per day | Continuous |
-| BPMeds | 1 = On blood pressure medication, 0 = Not | Binary |
-| prevalentStroke | 1 = History of stroke, 0 = No history | Binary |
-| prevalentHyp | 1 = Hypertension, 0 = No hypertension | Binary |
-| diabetes | 1 = Diabetes, 0 = No diabetes | Binary |
-| totChol | Total cholesterol (mg/dL) | Continuous |
-| sysBP | Systolic blood pressure (mmHg) | Continuous |
-| diaBP | Diastolic blood pressure (mmHg) | Continuous |
-| BMI | Body Mass Index | Continuous |
-| heartRate | Heart rate (beats per minute) | Continuous |
-| glucose | Glucose level (mg/dL) | Continuous |
+| Feature         | Description                               | Type       |
+| --------------- | ----------------------------------------- | ---------- |
+| age             | Age in years                              | Continuous |
+| gender          | 1 = Male, 0 = Female                      | Binary     |
+| currentSmoker   | 1 = Current smoker, 0 = Non-smoker        | Binary     |
+| cigsPerDay      | Number of cigarettes smoked per day       | Continuous |
+| BPMeds          | 1 = On blood pressure medication, 0 = Not | Binary     |
+| prevalentStroke | 1 = History of stroke, 0 = No history     | Binary     |
+| prevalentHyp    | 1 = Hypertension, 0 = No hypertension     | Binary     |
+| diabetes        | 1 = Diabetes, 0 = No diabetes             | Binary     |
+| totChol         | Total cholesterol (mg/dL)                 | Continuous |
+| sysBP           | Systolic blood pressure (mmHg)            | Continuous |
+| diaBP           | Diastolic blood pressure (mmHg)           | Continuous |
+| BMI             | Body Mass Index                           | Continuous |
+| heartRate       | Heart rate (beats per minute)             | Continuous |
+| glucose         | Glucose level (mg/dL)                     | Continuous |
 
 ### Training Data
 
@@ -166,31 +173,33 @@ The model is trained on the Framingham Heart Study dataset, which contains data 
 **Description**: Predict 10-year CHD risk for a patient
 
 **Request Body** (form-data):
+
 ```json
 {
-    "age": 45,
-    "gender": 1,
-    "currentSmoker": 0,
-    "cigsPerDay": 0,
-    "BPMeds": 0,
-    "prevalentStroke": 0,
-    "prevalentHyp": 0,
-    "diabetes": 0,
-    "totChol": 200,
-    "sysBP": 120,
-    "diaBP": 80,
-    "BMI": 25.0,
-    "heartRate": 75,
-    "glucose": 80
+  "age": 45,
+  "gender": 1,
+  "currentSmoker": 0,
+  "cigsPerDay": 0,
+  "BPMeds": 0,
+  "prevalentStroke": 0,
+  "prevalentHyp": 0,
+  "diabetes": 0,
+  "totChol": 200,
+  "sysBP": 120,
+  "diaBP": 80,
+  "BMI": 25.0,
+  "heartRate": 75,
+  "glucose": 80
 }
 ```
 
 **Response**:
+
 ```json
 {
-    "prediction": 0,
-    "probability": 0.15,
-    "risk_level": "Low"
+  "prediction": 0,
+  "probability": 0.15,
+  "risk_level": "Low"
 }
 ```
 
@@ -204,11 +213,11 @@ The model is trained on the Framingham Heart Study dataset, which contains data 
 
 ## Risk Categories
 
-| Risk Level | Probability | Recommendation |
-|------------|-------------|----------------|
-| Low | < 30% | Maintain healthy lifestyle |
-| Moderate | 30-60% | Consult healthcare provider |
-| High | > 60% | Immediate medical consultation |
+| Risk Level | Probability | Recommendation                 |
+| ---------- | ----------- | ------------------------------ |
+| Low        | < 30%       | Maintain healthy lifestyle     |
+| Moderate   | 30-60%      | Consult healthcare provider    |
+| High       | > 60%       | Immediate medical consultation |
 
 ## Contributing
 
