@@ -29,6 +29,27 @@
           class="{% if request.endpoint == 'about' %}active{% endif %}"
           >About</a
         >
+        {% if session.get('logged_in') %}
+          {% if session.get('role') == 'admin' %}
+            <a
+              href="/admin"
+              class="{% if request.endpoint == 'admin' %}active{% endif %}"
+              >Admin</a
+            >
+          {% endif %}
+          <a href="/logout">Logout ({{ session.get('username') }})</a>
+        {% else %}
+          <a
+            href="/login"
+            class="{% if request.endpoint == 'login' %}active{% endif %}"
+            >Login</a
+          >
+          <a
+            href="/signup"
+            class="{% if request.endpoint == 'signup' %}active{% endif %}"
+            >Sign Up</a
+          >
+        {% endif %}
       </div>
     </nav>
 

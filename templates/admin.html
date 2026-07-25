@@ -1,0 +1,72 @@
+{% extends "base.html" %} {% block title %}Admin Dashboard - CHD Prediction{% endblock %}
+{% block content %}
+<div class="hero">
+  <h1>Admin Dashboard</h1>
+  <p>Overview of Dataset Statistics (Framingham Heart Study)</p>
+</div>
+
+<div class="notes-grid" style="margin-bottom: 2rem;">
+  <div class="note-card">
+    <h3>Total Records</h3>
+    <p style="font-size: 2rem; font-weight: bold; color: var(--primary-color);">{{ stats.total_records }}</p>
+  </div>
+  <div class="note-card">
+    <h3>High Risk (TenYearCHD=1)</h3>
+    <p style="font-size: 2rem; font-weight: bold; color: var(--danger-color);">{{ stats.high_risk }}</p>
+  </div>
+  <div class="note-card">
+    <h3>Low Risk (TenYearCHD=0)</h3>
+    <p style="font-size: 2rem; font-weight: bold; color: var(--success-color);">{{ stats.low_risk }}</p>
+  </div>
+  <div class="note-card">
+    <h3>Average Age</h3>
+    <p style="font-size: 2rem; font-weight: bold; color: var(--secondary-color);">{{ stats.avg_age }}</p>
+  </div>
+</div>
+
+<div class="prediction-form" style="max-width: 100%;">
+  <h2>Dataset Characteristics</h2>
+  <div class="form-grid" style="grid-template-columns: 1fr 1fr; gap: 2rem;">
+    <div>
+      <h3 style="margin-bottom: 1rem; color: var(--text-secondary);">Cholesterol vs Age</h3>
+      <p>The dataset exhibits an average total cholesterol of <strong>{{ stats.avg_chol }} mg/dL</strong> across all demographics.</p>
+    </div>
+    <div>
+      <h3 style="margin-bottom: 1rem; color: var(--text-secondary);">Prevalence of Hypertension</h3>
+      <p>Approximately <strong>{{ stats.hypertension_percent }}%</strong> of the patients in the dataset have hypertension.</p>
+    </div>
+  </div>
+</div>
+
+<div class="prediction-form" style="max-width: 100%; margin-top: 2rem;">
+  <h2>Registered Users</h2>
+  <div style="overflow-x: auto; margin-top: 1rem;">
+    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+      <thead>
+        <tr style="border-bottom: 2px solid var(--border-color); background: var(--background-color);">
+          <th style="padding: 1rem;">Username</th>
+          <th style="padding: 1rem;">Role</th>
+          <th style="padding: 1rem;">Password (Hash/Stored)</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for username, data in users.items() %}
+        <tr style="border-bottom: 1px solid var(--border-color);">
+          <td style="padding: 1rem;"><strong>{{ username }}</strong></td>
+          <td style="padding: 1rem;">
+            {% if data.role == 'admin' %}
+              <span class="risk-badge high" style="padding: 0.25rem 0.5rem;">Admin</span>
+            {% else %}
+              <span class="risk-badge low" style="padding: 0.25rem 0.5rem;">User</span>
+            {% endif %}
+          </td>
+          <td style="padding: 1rem; color: var(--text-secondary); font-family: monospace;">
+            {{ data.password | length * '*' }}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

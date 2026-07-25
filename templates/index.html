@@ -14,6 +14,8 @@
 </div>
 {% endif %}
 
+{% if session.get('logged_in') %}
+
 <div class="prediction-form">
   <h2>Predict Your Risk</h2>
   <form method="POST" action="/predict" id="predictionForm">
@@ -154,6 +156,16 @@
     <button type="submit" class="btn-predict">Predict Risk</button>
   </form>
 </div>
+{% else %}
+<div class="prediction-form" style="text-align: center; padding: 3rem 1.5rem;">
+  <h2>Login Required</h2>
+  <p style="margin-bottom: 2rem; color: var(--text-secondary);">You must be logged in to access the predictive model and evaluate your risk.</p>
+  <div style="display: flex; gap: 1rem; justify-content: center;">
+    <a href="/login" class="btn-predict" style="width: auto; text-decoration: none; padding: 0.75rem 2rem; margin: 0;">Login</a>
+    <a href="/signup" class="btn-predict" style="width: auto; text-decoration: none; padding: 0.75rem 2rem; margin: 0; background: var(--secondary-color);">Sign Up</a>
+  </div>
+</div>
+{% endif %}
 
 <div class="about-snippet">
   <h3>How it works</h3>
